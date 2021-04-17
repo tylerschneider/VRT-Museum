@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_c120979c298d469e886a9e1b58b70c86:
-        m_Texture: {fileID: 2800000, guid: 7be43efcf0931fe46bc27a3c61281a41, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4af87c5e644f4a44b86634a40d03f46c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_e7f691a25fbf4ec0970bdef898643aff:
@@ -64,7 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5b302d1c6455d0440ae2a64726a07dff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -92,7 +92,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_37f55658fbe44bdab17633f1bbca1186: 1
+    - Vector1_37f55658fbe44bdab17633f1bbca1186: 2
+    - Vector1_d0235eeda9794abb92a6a01e1765c666: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -104,6 +105,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

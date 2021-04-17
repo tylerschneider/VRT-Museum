@@ -8,37 +8,70 @@ public class PhysicalButton : MonoBehaviour
 
     private Transform buttonTop;
 
+    public bool openRaygunHolder;
+    private float rotationSpeed = 1;
+    private bool lerpRotation = false;
+    private Transform glass;
+
     // Start is called before the first frame update
     void Start()
     {
         buttonTop = transform.Find("ButtonTop");
+
+        if(openRaygunHolder)
+        {
+            glass = transform.parent.Find("RaygunMachineGlass");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 localVelocity = buttonTop.InverseTransformDirection(buttonTop.GetComponent<Rigidbody>().velocity);
-        localVelocity.x = 0;
-        localVelocity.z = 0;
-
-        buttonTop.GetComponent<Rigidbody>().velocity = transform.TransformDirection(localVelocity);
+        Vector3 pos = Vector3.zero;
 
         if (buttonTop.localPosition.y > 0)
         {
-            buttonTop.localPosition = Vector3.zero;
+            pos.y = 0;
         }
         else if(buttonTop.localPosition.y < buttonLimit)
         {
-            buttonTop.localPosition = new Vector3(0, buttonLimit, 0);
+            pos.y = buttonLimit;
+        }
+        else
+        {
+            pos.y = buttonTop.localPosition.y;
+        }
+
+        buttonTop.localPosition = pos;
+
+
+        if(openRaygunHolder)
+        {
+            if (lerpRotation)
+            {
+                if (glass.localEulerAngles.y < 270)
+                {
+                    glass.Rotate(0, 0, rotationSpeed, Space.Self);
+                }
+            }
+            else
+            {
+                if (glass.localEulerAngles.y > 90)
+                {
+                    glass.Rotate(0, 0, -rotationSpeed, Space.Self);
+                }
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject, other.gameObject);
         if(other.tag == "Button")
         {
-            Debug.Log("Button Pressed");
+            if(openRaygunHolder == true)
+            {
+                lerpRotation = !lerpRotation;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class RaygunScript : MonoBehaviour
 {
@@ -23,6 +24,19 @@ public class RaygunScript : MonoBehaviour
         {
             s = this;
         }
+    }
+
+    public void SetObject()
+    {
+        XRBaseInteractable obj = transform.Find("AttachPoint").GetComponent<XRSocketInteractor>().selectTarget;
+        raygunObject = obj.GetComponent<RaygunObject>();
+        raygunObjectType = raygunObject.raygunObjectType;
+    }
+
+    public void UnsetObject()
+    {
+        raygunObject = null;
+        raygunObjectType = "";
     }
 
     private void OnTriggerButtonPress()
@@ -111,7 +125,7 @@ public class RaygunScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.tag);
         if(other.tag == "Raygunobject")
@@ -135,7 +149,7 @@ public class RaygunScript : MonoBehaviour
             raygunObject = null;
             raygunObjectType = "";
         }
-    }
+    }*/
 
     private void Update()
     {

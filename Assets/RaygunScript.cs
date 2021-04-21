@@ -75,14 +75,17 @@ public class RaygunScript : MonoBehaviour
                         }
                     }
                 }
+                //if using paint, change material color
                 else if (raygunObjectType == "Paint")
                 {
                     hitObject.GetComponent<Renderer>().material.color = raygunObject.color;
                 }
+                //if using material, change material
                 else if (raygunObjectType == "Material")
                 {
                     hitObject.GetComponent<Renderer>().material = raygunObject.materialType;
                 }
+                //if using wireframe, change mesh
                 else if (raygunObjectType == "Wireframe")
                 {
 
@@ -96,9 +99,11 @@ public class RaygunScript : MonoBehaviour
         //if using the raygun sizer
         if (raygunObjectType == "Sizer")
         {
+            //get label objects
             Transform sizerLabels = raygunObject.transform.Find("SizerLabels");
             Transform sizerXYZ = raygunObject.transform.Find("SizerXYZ");
 
+            //change the rotation based on which sizer is selected
             switch(raygunObject.sizer)
             {
                 case "X":
@@ -111,6 +116,7 @@ public class RaygunScript : MonoBehaviour
                     sizerLabels.Rotate(0, 360f / 3f, 0, Space.Self);
                     break;
                 case "Z":
+                    //change the gameobject when xyz
                     raygunObject.sizer = "XYZ";
                     sizerXYZ.gameObject.SetActive(true);
                     sizerLabels.gameObject.SetActive(false);
@@ -125,50 +131,32 @@ public class RaygunScript : MonoBehaviour
         }
     }
 
-    /*private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.tag);
-        if(other.tag == "Raygunobject")
-        {
-            Debug.Log(other.gameObject.name, other.gameObject);
-            Destroy(other.GetComponent<Rigidbody>());
-            other.transform.parent = transform.Find("AttachPoint");
-            other.transform.position = transform.Find("AttachPoint").transform.position;
-
-            raygunObject = other.GetComponent<RaygunObject>();
-            raygunObjectType = raygunObject.raygunObjectType;
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if(other == raygunObject)
-        {
-            raygunObject.gameObject.AddComponent<Rigidbody>();
-            raygunObject.transform.parent = null;
-            raygunObject = null;
-            raygunObjectType = "";
-        }
-    }*/
-
     private void Update()
     {
+        //if sizer
         if(raygunObjectType == "Sizer")
         {
+            //get the label
             Transform sizerLabels = raygunObject.transform.Find("SizerLabels");
 
+            //check if done rotating
             if (rotationProgress != rotationTarget)
             {
+                //add rotation speed
                 rotationProgress += sizerRotationSpeed;
+
+                //if 360, reset to 0
                 if (rotationProgress == 360)
                 {
                     rotationProgress = 0;
                 }
 
+                //rotate the labels
                 sizerLabels.Rotate(0, sizerRotationSpeed, 0, Space.Self);
             }
         }
 
+        //check for trigger every frame ======= change this ========
         OnTriggerButtonPress();
     }
 }

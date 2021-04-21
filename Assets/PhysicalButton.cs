@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PhysicalButton : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class PhysicalButton : MonoBehaviour
     private Transform buttonTop;
 
     public bool openRaygunHolder;
+    public bool materialMachineLeft;
+    public bool materialMachineRight;
+    public bool setMaterial;
+
+    public XRSocketInteractor interactable;
+
     private float rotationSpeed = 1;
     private bool lerpRotation = false;
-    private Transform glass;
+    private Transform affectedTransform;
+    private MaterialMachine materialMachine;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +28,12 @@ public class PhysicalButton : MonoBehaviour
 
         if(openRaygunHolder)
         {
-            glass = transform.parent.Find("RaygunMachineGlass");
+            affectedTransform = transform.parent.Find("RaygunMachineGlass");
+        }
+        else if(materialMachineLeft || materialMachineRight || setMaterial)
+        {
+            affectedTransform = transform.parent;
+            materialMachine = affectedTransform.GetComponent<MaterialMachine>();
         }
     }
 
@@ -49,16 +62,16 @@ public class PhysicalButton : MonoBehaviour
         {
             if (lerpRotation)
             {
-                if (glass.localEulerAngles.y < 270)
+                if (affectedTransform.localEulerAngles.y < 270)
                 {
-                    glass.Rotate(0, 0, rotationSpeed, Space.Self);
+                    affectedTransform.Rotate(0, 0, rotationSpeed, Space.Self);
                 }
             }
             else
             {
-                if (glass.localEulerAngles.y > 90)
+                if (affectedTransform.localEulerAngles.y > 90)
                 {
-                    glass.Rotate(0, 0, -rotationSpeed, Space.Self);
+                    affectedTransform.Rotate(0, 0, -rotationSpeed, Space.Self);
                 }
             }
         }
@@ -68,9 +81,40 @@ public class PhysicalButton : MonoBehaviour
     {
         if(other.tag == "Button")
         {
-            if(openRaygunHolder == true)
+            if(openRaygunHolder)
             {
                 lerpRotation = !lerpRotation;
+
+                if(lerpRotation)
+                {
+                    //return objects here ?
+                }
+            }
+
+            if (materialMachineLeft)
+            {
+                materialMachine.selectedMaterial = materialMachine.selectedMaterial - 1 >= 0 ? materialMachine.selectedMaterial - 1 : materialMachine.materials.Length - 1;
+                materialMachine.right = false;
+                Debug.Log(materialMachine.selectedMaterial);
+            }
+            if (materialMachineRight)
+            {
+                materialMachine.selectedMaterial = materialMachine.selectedMaterial + 1 <= materialMachine.materials.Length - 1 ? materialMachine.selectedMaterial + 1 : 0;
+                materialMachine.right = true;
+                Debug.Log(materialMachine.selectedMaterial);
+            }
+
+            if(setMaterial && interactable.selectTarget != null)
+            {
+                interactable.selectTarget.GetComponent<RaygunObject>().materialType = materialMachine.materials[materialMachine.selectedMaterial];
+                Material[] matArray = interactable.selectTarget.GetComponent<Renderer>().materials;
+                matArray[2] = materialMachine.materials[materialMachine.selectedMaterial];
+                interactable.selectTarget.GetComponent<Renderer>().materials = matArray;
+                Debug.Log("Changed to material " + materialMachine.materials[materialMachine.selectedMaterial].name);
+            }
+            else
+            {
+                Debug.Log("No material object in socket");
             }
         }
     }

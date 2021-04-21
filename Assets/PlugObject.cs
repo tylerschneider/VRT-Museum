@@ -9,7 +9,6 @@ public class PlugObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "Raygunobject")
         {
             if(!GetComponent<XRGrabInteractable>().isSelected)

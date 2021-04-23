@@ -13,13 +13,21 @@ public class PhysicalButton : MonoBehaviour
     public bool materialMachineLeft;
     public bool materialMachineRight;
     public bool setMaterial;
+    public bool statueFinalizer;
 
     public XRSocketInteractor interactable;
+
+    public GameObject raygun;
+
+    public GameObject statueBase;
+    public GameObject statueBasePrefab;
 
     private float rotationSpeed = 1;
     private bool lerpRotation = false;
     private Transform affectedTransform;
     private MaterialMachine materialMachine;
+    private Vector3 startPos;
+    private Quaternion startRot;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +37,17 @@ public class PhysicalButton : MonoBehaviour
         if(openRaygunHolder)
         {
             affectedTransform = transform.parent.Find("RaygunMachineGlass");
+            Debug.Log(affectedTransform);
         }
         else if(materialMachineLeft || materialMachineRight || setMaterial)
         {
             affectedTransform = transform.parent;
             materialMachine = affectedTransform.GetComponent<MaterialMachine>();
+        }
+        else if(statueFinalizer)
+        {
+            startPos = statueBase.transform.position;
+            startRot = statueBase.transform.rotation;
         }
     }
 
@@ -75,6 +89,18 @@ public class PhysicalButton : MonoBehaviour
                 }
             }
         }
+
+        if(statueFinalizer)
+        {
+            if(statueBase.GetComponent<XRGrabInteractable>())
+            {
+                if(statueBase.GetComponent<XRGrabInteractable>().selectingInteractor != null)
+                {
+                    statueBase = Instantiate(statueBasePrefab, startPos, startRot);
+                }
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -83,7 +109,9 @@ public class PhysicalButton : MonoBehaviour
         {
             if(openRaygunHolder)
             {
+                Debug.Log("Pressed");
                 lerpRotation = !lerpRotation;
+                raygun.layer = LayerMask.NameToLayer("Raygun");
 
                 if(lerpRotation)
                 {
@@ -115,6 +143,23 @@ public class PhysicalButton : MonoBehaviour
             else
             {
                 Debug.Log("No material object in socket");
+            }
+
+            if(statueFinalizer)
+            {
+                if(statueBase.transform.childCount != 0)
+                {
+                    foreach(Transform child in statueBase.transform)
+                    {
+                        Destroy(child.GetComponent<XRGrabInteractable>());
+                        Destroy(child.GetComponent<StatueObject>());
+                    }
+
+                    Destroy(statueBase.GetComponent<StatueObject>());
+                    statueBase.AddComponent<XRGrabInteractable>();
+                    statueBase.GetComponent<Rigidbody>().isKinematic = false;
+                }
+
             }
         }
     }

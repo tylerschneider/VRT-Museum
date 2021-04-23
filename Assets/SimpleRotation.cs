@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class SimpleRotation : MonoBehaviour
 {
@@ -16,7 +17,12 @@ public class SimpleRotation : MonoBehaviour
 
     void Update()
     {
-        transform.localPosition = startPos + new Vector3(0, 0, Mathf.Sin(Time.time * movementSpeed) * movementDistance);
+        transform.localPosition = startPos + new Vector3(0, Mathf.Sin(Time.time * movementSpeed) * movementDistance, 0);
         transform.Rotate(0, rotationSpeed, 0, Space.Self);
+    }
+
+    public void DisableSocket()
+    {
+        Destroy(gameObject);
     }
 }

@@ -19,10 +19,10 @@ TagManager:
   - Button
   - Environment
   - Raygun
-  - 
-  - 
-  - 
-  - 
+  - HeldObject
+  - StatueObject
+  - RaygunPlug
+  - Placed
   - 
   - 
   - 

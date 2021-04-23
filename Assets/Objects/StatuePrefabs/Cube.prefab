@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 7985846258534363068}
   - component: {fileID: 9079682620604018474}
   - component: {fileID: 5738642788491671601}
-  m_Layer: 0
+  - component: {fileID: 7775112859962889932}
+  - component: {fileID: -4637903299744998793}
+  m_Layer: 12
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: StatueObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +119,7 @@ MonoBehaviour:
   - {fileID: 5738642788491671601}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 22536
   m_CustomReticle: {fileID: 0}
   m_FirstHoverEntered:
     m_PersistentCalls:
@@ -172,7 +174,7 @@ MonoBehaviour:
       m_Calls: []
   m_AttachTransform: {fileID: 0}
   m_AttachEaseInTime: 0.15
-  m_MovementType: 1
+  m_MovementType: 2
   m_VelocityDamping: 0.4
   m_VelocityScale: 1
   m_AngularVelocityDamping: 0.4
@@ -205,7 +207,7 @@ MonoBehaviour:
   m_ThrowVelocityScale: 1.5
   m_ThrowAngularVelocityScale: 1
   m_ForceGravityOnDetach: 0
-  m_RetainTransformParent: 1
+  m_RetainTransformParent: 0
 --- !u!64 &5738642788491671601
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -215,6 +217,34 @@ MeshCollider:
   m_GameObject: {fileID: 6163782058776008234}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: 45147e8c9e6d2474d87e552214a6f831, type: 3}
+--- !u!114 &7775112859962889932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163782058776008234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae64a4ab8b2b2d448218c24f3ecedcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseObject: 0
+  connected: 0
+--- !u!64 &-4637903299744998793
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163782058776008234}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1

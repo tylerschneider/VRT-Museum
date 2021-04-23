@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class RaygunScript : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class RaygunScript : MonoBehaviour
 
     private int rotationTarget = 0;
     private int rotationProgress = 0;
+
+    private bool pressing = false;
+
+    public InputActionReference secondButtonLeft;
+    public InputActionReference secondButtonRight;
 
     void Start()
     {
@@ -39,62 +45,20 @@ public class RaygunScript : MonoBehaviour
         raygunObjectType = "";
     }
 
-    private void OnTriggerButtonPress()
+    public void OnTriggerButtonEnter()
     {
-        //check for hit
-        RaycastHit hit;
-        if (Physics.Raycast(transform.Find("RaycastPoint").transform.position, transform.forward, out hit, distance))
-        {
-            //if hitting a statue object
-            if (hit.collider.tag == "StatueObject")
-            {
-                //get the object
-                GameObject hitObject = hit.collider.gameObject;
+        pressing = true;
 
-                //if using the raygun sizer
-                if (raygunObjectType == "Sizer")
-                {
-                    //check which sizer is selected 
-                    if(raygunObject.sizer == "X" && hitObject.transform.localScale.x < 5)
-                    {
-                        hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x + sizerSpeed, hitObject.transform.localScale.y, hitObject.transform.localScale.z);
-                    }
-                    else if(raygunObject.sizer == "Y" && hitObject.transform.localScale.y < 5)
-                    {
-                        hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x, hitObject.transform.localScale.y + sizerSpeed, hitObject.transform.localScale.z);
-                    }
-                    else if(raygunObject.sizer == "Z"  && hitObject.transform.localScale.z < 5)
-                    {
-                        hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x, hitObject.transform.localScale.y, hitObject.transform.localScale.z + sizerSpeed);
-                    }
-                    else if(raygunObject.sizer == "XYZ")
-                    {
-                        if(hitObject.transform.localScale.x < 5 && hitObject.transform.localScale.y < 5 && hitObject.transform.localScale.z < 5)
-                        {
-                            hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x + sizerSpeed, hitObject.transform.localScale.y + sizerSpeed, hitObject.transform.localScale.z + sizerSpeed);
-                        }
-                    }
-                }
-                //if using paint, change material color
-                else if (raygunObjectType == "Paint")
-                {
-                    hitObject.GetComponent<Renderer>().material.color = raygunObject.color;
-                }
-                //if using material, change material
-                else if (raygunObjectType == "Material")
-                {
-                    hitObject.GetComponent<Renderer>().material = raygunObject.materialType;
-                }
-                //if using wireframe, change mesh
-                else if (raygunObjectType == "Wireframe")
-                {
-
-                }
-            }
-        }
+        transform.Find("RaycastPoint").GetComponent<LineRenderer>().enabled = true;
     }
 
-    public void OnMainButtonPress()
+    public void OnTriggerButtonExit()
+    {
+        pressing = false;
+        transform.Find("RaycastPoint").GetComponent<LineRenderer>().enabled = false;
+    }
+
+    public void OnSecondButtonPress()
     {
         //if using the raygun sizer
         if (raygunObjectType == "Sizer")
@@ -113,7 +77,6 @@ public class RaygunScript : MonoBehaviour
                 case "Y":
                     raygunObject.sizer = "Z";
                     rotationTarget = 240;
-                    sizerLabels.Rotate(0, 360f / 3f, 0, Space.Self);
                     break;
                 case "Z":
                     //change the gameobject when xyz
@@ -133,6 +96,11 @@ public class RaygunScript : MonoBehaviour
 
     private void Update()
     {
+        if(secondButtonLeft.action.phase == InputActionPhase.Performed || secondButtonRight.action.triggered)
+        {
+            OnSecondButtonPress();
+        }
+
         //if sizer
         if(raygunObjectType == "Sizer")
         {
@@ -156,7 +124,63 @@ public class RaygunScript : MonoBehaviour
             }
         }
 
-        //check for trigger every frame ======= change this ========
-        OnTriggerButtonPress();
+        if (pressing)
+        {
+            //check for hit
+            RaycastHit hit;
+            if (Physics.Raycast(transform.Find("RaycastPoint").transform.position, transform.forward, out hit, distance))
+            {
+                //if hitting a statue object
+                if (hit.collider.tag == "StatueObject")
+                {
+                    //get the object
+                    GameObject hitObject = hit.collider.gameObject;
+
+                    //if using the raygun sizer
+                    if (raygunObjectType == "Sizer")
+                    {
+                        //check which sizer is selected 
+                        if (raygunObject.sizer == "X" && hitObject.transform.localScale.x < 5)
+                        {
+                            hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x + sizerSpeed, hitObject.transform.localScale.y, hitObject.transform.localScale.z);
+                        }
+                        else if (raygunObject.sizer == "Y" && hitObject.transform.localScale.y < 5)
+                        {
+                            hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x, hitObject.transform.localScale.y + sizerSpeed, hitObject.transform.localScale.z);
+                        }
+                        else if (raygunObject.sizer == "Z" && hitObject.transform.localScale.z < 5)
+                        {
+                            hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x, hitObject.transform.localScale.y, hitObject.transform.localScale.z + sizerSpeed);
+                        }
+                        else if (raygunObject.sizer == "XYZ")
+                        {
+                            if (hitObject.transform.localScale.x < 5 && hitObject.transform.localScale.y < 5 && hitObject.transform.localScale.z < 5)
+                            {
+                                hitObject.transform.localScale = new Vector3(hitObject.transform.localScale.x + sizerSpeed, hitObject.transform.localScale.y + sizerSpeed, hitObject.transform.localScale.z + sizerSpeed);
+                            }
+                        }
+                    }
+                    //if using paint, change material color
+                    else if (raygunObjectType == "Paint")
+                    {
+                        Debug.Log("Paint");
+                        hitObject.GetComponent<Renderer>().material.color = raygunObject.color;
+                    }
+                    //if using material, change material
+                    else if (raygunObjectType == "Material")
+                    {
+                        Debug.Log("Material");
+                        Color col = hitObject.GetComponent<Renderer>().material.color;
+                        hitObject.GetComponent<Renderer>().material = raygunObject.materialType;
+                        hitObject.GetComponent<Renderer>().material.color = col;                    }
+                    //if using wireframe, change mesh
+                    else if (raygunObjectType == "Wireframe")
+                    {
+                        Debug.Log("Wireframe");
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -19,8 +19,8 @@ public class StudioColorManager : MonoBehaviour
 
     void Start()
     {
-        colorSocket = transform.Find("ColorPlug").GetComponent<XRSocketInteractor>();
-        emissionSocket = transform.Find("EmissionPlug").GetComponent<XRSocketInteractor>();
+        colorSocket = transform.parent.Find("ColorPlug").GetComponent<XRSocketInteractor>();
+        emissionSocket = transform.parent.Find("EmissionPlug").GetComponent<XRSocketInteractor>();
 
         previousColor = colorSocket.selectTarget;
         previousEmission = emissionSocket.selectTarget;

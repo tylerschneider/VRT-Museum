@@ -26,6 +26,7 @@ public class SpawnPoint : MonoBehaviour
                 }
             }
             spawnedObject = Instantiate(prefab, transform.position, prefab.transform.rotation);
+            spawnedObject.name = prefab.name;
         }
     }
 }

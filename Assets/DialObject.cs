@@ -2,19 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEditor;
+using UnityEngine.UI;
 
 public class DialObject : MonoBehaviour
 {
     private float startHandRot;
     private float handRot;
-    public Vector3 startRot = new Vector3(0, 90, 90);
+    private Vector3 startRot;
     private bool grabbed;
-    public float angle;
-    private float newAngle;
+    private float angle;
+    public float value;
+    public GameObject valueDialImage;
+    public DialObject colorDial;
+
+    private void Start()
+    {
+        startRot = transform.eulerAngles;
+    }
 
     void Update()
     {
-        /*if (GetComponent<XRGrabInteractable>().selectingInteractor != null)
+        if(gameObject.name == "ColorDial")
+        {
+            value = transform.eulerAngles.z / 360;
+        }
+        else
+        {
+            value = Mathf.Abs(1 - (transform.eulerAngles.z / 360));
+        }
+
+        if (GetComponent<XRGrabInteractable>().selectingInteractor != null)
         {
             //get the z rotation of the grabber
             handRot = GetComponent<XRGrabInteractable>().selectingInteractor.transform.eulerAngles.z;
@@ -29,15 +47,22 @@ public class DialObject : MonoBehaviour
 
             //find the angle change since grabbing
             float angle = handRot - startHandRot;
-
-            Debug.Log(startRot.x + " " + angle);
             
-            transform.eulerAngles = new Vector3(startRot.x + angle, startRot.y, startRot.z);
+            transform.eulerAngles = new Vector3(startRot.x, startRot.y, startRot.z - angle);
         }
         else
         {
             grabbed = false;
-            startRot.x = transform.eulerAngles.x;
-        }*/
+            startRot.z = transform.eulerAngles.z;
+        }
+
+        if(colorDial == null && valueDialImage != null)
+        {
+            valueDialImage.GetComponent<Image>().material.color = Color.HSVToRGB(value, 1, 1);
+        }
+        else if(colorDial != null && valueDialImage != null)
+        {
+            valueDialImage.GetComponent<Image>().material.color = Color.HSVToRGB(colorDial.value, value, 1);
+        }
     }
 }

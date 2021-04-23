@@ -40,8 +40,8 @@ public class StatueObject : MonoBehaviour
         {
             GameObject obj = other.gameObject;
 
-            //if this object is not being grabbed and not connected and was grabbed last frame
-            if (!GetComponent<XRGrabInteractable>().isSelected && !connected && wasGrabbed)
+            //if this object is not being grabbed and not connected and was grabbed last frame and the interacting object is connected to the base
+            if (!GetComponent<XRGrabInteractable>().isSelected && !connected && wasGrabbed && other.GetComponent<StatueObject>().connected)
             {
                 Debug.Log("Placing");
 

@@ -10,6 +10,7 @@ public class RaygunObject : MonoBehaviour
     public Material materialType;
     public string sizer = "X";
     private LayerMask startLayer;
+    public List<Mesh> wireframes = new List<Mesh>();
 
     private void Start()
     {

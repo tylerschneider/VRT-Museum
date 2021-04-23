@@ -140,4 +140,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseObject: 1
-  connected: 0
+  connected: 1

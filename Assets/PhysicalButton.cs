@@ -14,6 +14,7 @@ public class PhysicalButton : MonoBehaviour
     public bool materialMachineRight;
     public bool setMaterial;
     public bool statueFinalizer;
+    public bool colorSpawner;
 
     public XRSocketInteractor interactable;
 
@@ -21,6 +22,12 @@ public class PhysicalButton : MonoBehaviour
 
     public GameObject statueBase;
     public GameObject statueBasePrefab;
+
+    public GameObject colorPrefab;
+    public Transform colorSpawnpoint;
+    public DialObject colorDial;
+    public DialObject saturationDial;
+    public DialObject brightnessDial;
 
     private float rotationSpeed = 1;
     private bool lerpRotation = false;
@@ -37,7 +44,6 @@ public class PhysicalButton : MonoBehaviour
         if(openRaygunHolder)
         {
             affectedTransform = transform.parent.Find("RaygunMachineGlass");
-            Debug.Log(affectedTransform);
         }
         else if(materialMachineLeft || materialMachineRight || setMaterial)
         {
@@ -140,7 +146,7 @@ public class PhysicalButton : MonoBehaviour
                 interactable.selectTarget.GetComponent<Renderer>().materials = matArray;
                 Debug.Log("Changed to material " + materialMachine.materials[materialMachine.selectedMaterial].name);
             }
-            else
+            else if(setMaterial)
             {
                 Debug.Log("No material object in socket");
             }
@@ -160,6 +166,15 @@ public class PhysicalButton : MonoBehaviour
                     statueBase.GetComponent<Rigidbody>().isKinematic = false;
                 }
 
+            }
+
+            if(colorSpawner)
+            {
+                GameObject go = Instantiate(colorPrefab, colorSpawnpoint.position, colorSpawnpoint.rotation);
+                Color col = Color.HSVToRGB(colorDial.value, saturationDial.value, brightnessDial.value);
+                go.GetComponent<RaygunObject>().color = col;
+                Material[] matArray = go.GetComponent<Renderer>().materials;
+                matArray[1].color = col;
             }
         }
     }

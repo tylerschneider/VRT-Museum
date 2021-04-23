@@ -177,7 +177,14 @@ public class RaygunScript : MonoBehaviour
                     else if (raygunObjectType == "Wireframe")
                     {
                         Debug.Log("Wireframe");
-
+                        foreach(Mesh mesh in raygunObject.wireframes)
+                        {
+                            if(mesh.name == hitObject.name + " Wire")
+                            {
+                                hitObject.GetComponent<MeshFilter>().mesh = mesh;
+                                break;
+                            }    
+                        }
                     }
                 }
             }

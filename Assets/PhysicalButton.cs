@@ -121,7 +121,10 @@ public class PhysicalButton : MonoBehaviour
 
                 if(lerpRotation)
                 {
-                    //return objects here ?
+                    if(!raygun.GetComponent<XRGrabInteractable>().isSelected)
+                    {
+                        raygun.transform.position = raygun.GetComponent<RaygunScript>().startPos;
+                    }
                 }
             }
 
@@ -162,7 +165,7 @@ public class PhysicalButton : MonoBehaviour
                     }
 
                     Destroy(statueBase.GetComponent<StatueObject>());
-                    statueBase.AddComponent<XRGrabInteractable>();
+                    statueBase.AddComponent<XRGrabInteractable>().interactionLayerMask = LayerMask.NameToLayer("StatueObject");
                     statueBase.GetComponent<Rigidbody>().isKinematic = false;
                 }
 

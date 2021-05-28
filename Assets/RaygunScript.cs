@@ -24,12 +24,16 @@ public class RaygunScript : MonoBehaviour
     public InputActionReference secondButtonLeft;
     public InputActionReference secondButtonRight;
 
+    public Vector3 startPos;
+
     void Start()
     {
         if (s == null)
         {
             s = this;
         }
+
+        startPos = transform.position;
     }
 
     public void SetObject()
@@ -96,6 +100,15 @@ public class RaygunScript : MonoBehaviour
 
     private void Update()
     {
+        //reset position if the raygun is lost
+        if(Vector3.Distance(startPos, transform.position) > 1000)
+        {
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+            transform.position = startPos;
+        }
+
         if(secondButtonLeft.action.phase == InputActionPhase.Performed || secondButtonRight.action.triggered)
         {
             OnSecondButtonPress();

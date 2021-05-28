@@ -2629,10 +2629,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431524787}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.01, y: 0.01, z: 0.01}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &451086776
 GameObject:
@@ -8859,7 +8859,7 @@ MonoBehaviour:
       m_Calls: []
   m_TeleportationProvider: {fileID: 1576577219}
   m_MatchOrientation: 0
-  m_TeleportTrigger: 2
+  m_TeleportTrigger: 0
 --- !u!65 &1248382218
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11373,14 +11373,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576577214}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: 0.7071071, z: -0, w: -0.70710653}
   m_LocalPosition: {x: -42.819, y: -0.46, z: -231.258}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1325085262}
   m_Father: {fileID: 0}
   m_RootOrder: 26
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!114 &1576577219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17292,6 +17292,8 @@ MonoBehaviour:
   - {fileID: 4053793227163840683}
   - {fileID: 2913318294945007099}
   - {fileID: 604228144313961604}
+  - {fileID: 928538059}
+  - {fileID: 1351525957}
   reflectionProbes:
   - {fileID: 451086777}
   previousColor: {fileID: 543880383788023007}
